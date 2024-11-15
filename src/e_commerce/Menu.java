@@ -1,20 +1,41 @@
 package e_commerce;
 
+import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import site.controller.SiteController;
 import site.model.*;
 
 public class Menu {
 
 	public static void main(String[] args) {
-		
-		
-		
+
+		SiteController sites = new SiteController();
+
 		Scanner leia = new Scanner(System.in);
+
+		int opcao, codigo, marca = 0, preco, quantidade;
+		String modelo;
 		
-		int opcao;
+		System.out.println("\nCriar estoque\n");
 		
-		while(true) {
-			
+		Samsung sam1 = new Samsung(sites.gerarNumero(), 1, 2000, "S24", 2);
+		sites.cadastrar(sam1);
+
+		Samsung sam2 = new Samsung(sites.gerarNumero(), 1, 1500, "A55", 5);
+		sites.cadastrar(sam2);
+
+		Motorola mot1 = new Motorola(sites.gerarNumero(), 2, 900, "G24", 3);
+		sites.cadastrar(mot1);
+
+		Motorola mot2 = new Motorola(sites.gerarNumero(), 2,2500, "EDGE 40", 1);
+		sites.cadastrar(mot2);
+
+		sites.listarTodas();
+
+		while (true) {
+
 			System.out.println(" _____________________________ ");
 			System.out.println("|                             |");
 			System.out.println("|      *Celulares e cia.*     |");
@@ -30,38 +51,118 @@ public class Menu {
 			System.out.println("|                             |");
 			System.out.println("|  Digite a opção desejada:   |");
 			System.out.println("|_____________________________|");
-			
-			opcao = leia.nextInt();
-			
-			if(opcao == 0) {
+
+			try {
+				opcao = leia.nextInt();
+			} catch (InputMismatchException e) {
+				System.out.println("\nDigite valores inteiros! ");
+				leia.nextLine();
+				opcao = 0;
+			}
+
+			if (opcao == 0) {
 				System.out.println("\n  *Obrigada por sua visita e volte sempre!* ");
 				sobre();
 				leia.close();
 				System.exit(0);
 			}
-			
+
 			switch (opcao) {
 			case 1:
 				System.out.println("\nCriar Produtos: \n");
+
+				System.out.println("Digite o Modelo do aparelho: ");
+				modelo = leia.next();
+				System.out.println("Digite o preço do aparelho: ");
+				leia.skip("\\R?");
+				preco = leia.nextInt();
+
+				do {
+					System.out.println("Digite a marca do aparelho (1 - Samsung ou 2 Motorola): ");
+					marca = leia.nextInt();
+				} while (marca < 1 && marca > 2);
+
+				System.out.println("Digite a quantidade de aparelho em estoque: ");
+				quantidade = leia.nextInt();
+
 				
+				keyPress();
 				break;
+				
 			case 2:
 				System.out.println("\nListar Produtos: \n");
-				
+				sites.listarTodas();
+				keyPress();
+
 				break;
 			case 3:
 				System.out.println("\nBuscar Produto por marca: \n");
 				
+				System.out.println("Digite o código do produto: ");
+				codigo = leia.nextInt();
+				
+				sites.procurarPorNumero(codigo);
+
+				keyPress();
 				break;
 			case 4:
 				System.out.println("\nAtualizar dados de um celular: \n");
+				
+				System.out.println("Digite o código do aparelho: ");
+				codigo = leia.nextInt();
+				
+				var buscaCodigo = sites.buscaNaCollection(codigo);
+				
+				if(buscaCodigo != null) {
+					
+					codigo = buscaCodigo.getCodigo();
+					
+					System.out.println("Digite o Modelo do aparelho: ");
+					modelo = leia.next();
+					System.out.println("Digite o preço do aparelho: ");
+					leia.skip("\\R?");
+					preco = leia.nextInt();
+					System.out.println("Digite a quantidade de aparelho em estoque: ");
+			        quantidade = leia.nextInt();
+			        
+			        System.out.println("Digite a marca do aparelho (1 - Samsung ou 2 - Motorola): ");
+			        marca = leia.nextInt();
+			        
+			        switch (marca) {
+					case 1 -> {
+						
+						Site siteAtualizado = new Samsung(codigo, marca, preco, modelo, quantidade);
+						sites.atualizar(siteAtualizado);
 
+					}
+					case 2 -> {
+						Site siteAtualizado = new Motorola(codigo, marca, preco, modelo, quantidade);
+						sites.atualizar(siteAtualizado);
+
+						
+
+					}
+					default -> {
+						System.out.println("Marca inválida!");
+					}
+					}
+				} else {
+					System.out.println("Aparelho não encontrada!");
+				}
+
+				keyPress();
 				break;
 			case 5:
 				System.out.println("\nApagar Produto: \n");
-
-				break;
+				 
+				System.out.println("Digite o código do aparelho: ");
+				codigo = leia.nextInt();
 				
+				sites.deletar(codigo);
+				
+				keyPress();
+				break;
+
 			default:
 				System.out.println("\nOpção Inválida!\n");
 				break;
@@ -69,7 +170,7 @@ public class Menu {
 		}
 
 	}
-	
+
 	public static void sobre() {
 		System.out.println(" ______________________________________________________________ ");
 		System.out.println("|                                                              |");
@@ -80,4 +181,16 @@ public class Menu {
 		System.out.println("|______________________________________________________________|");
 	}
 
+	public static void keyPress() {
+
+		try {
+
+			System.out.println("\n\nPressione Enter para Continuar...");
+			System.in.read();
+
+		} catch (IOException e) {
+
+			System.out.println("Você pressionou uma tecla diferente de enter!");
+		}
+	}
 }

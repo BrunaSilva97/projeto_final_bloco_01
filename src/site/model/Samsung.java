@@ -1,12 +1,12 @@
 package site.model;
 
-public class Samsung extends Site{
-	
+public class Samsung extends Site {
+
 	private String Samsung;
-	
-	public Samsung(int codigo, int marca, int preco, String modelo, float quantidade) {
+
+	public Samsung(int codigo, int marca, int preco, String modelo, int quantidade) {
 		super(codigo, marca, preco, modelo, quantidade);
-		this.Samsung = Samsung;	
+		this.Samsung = Samsung;
 	}
 
 	public String getSamsung() {
@@ -16,10 +16,10 @@ public class Samsung extends Site{
 	public void setSamsung(String samsung) {
 		Samsung = samsung;
 	}
+
 	
-	@override
 	public void visualizar() {
 		super.visualizar();
-		System.out.println("Marca: " + this.Samsung);
 	}
+
 }

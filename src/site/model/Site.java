@@ -6,9 +6,9 @@ public abstract class Site {
 	private int marca;
 	private int preco;
 	private String modelo;
-	private float quantidade;
+	private int quantidade;
 	
-	public Site(int codigo, int marca, int preco, String modelo, float quantidade) {
+	public Site(int codigo, int marca, int preco, String modelo, int quantidade) {
 		this.codigo = codigo;
 		this.marca = marca;
 		this.preco = preco;
@@ -48,11 +48,11 @@ public abstract class Site {
 		this.modelo = modelo;
 	}
 
-	public float getQuantidade() {
+	public int getQuantidade() {
 		return quantidade;
 	}
 
-	public void setQuantidade(float quantidade) {
+	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
 	}
 		
@@ -69,17 +69,15 @@ public abstract class Site {
 		break;
 		}
 		
-		System.out.println("\n\n ______________________________________ ");
-		System.out.println("|  Dados do aparelho:                  |");
-		System.out.println(" ______________________________________ ");
-		System.out.println("|  Código: " + this.codigo + "         |");
-		System.out.println("|  Modelo: " + this.modelo + "         |");
-		System.out.println("|  Marca: " + marca + "                |");
-		System.out.println("|  Preço: " + this.preco + "           |");
-		System.out.println("|  Quantidade: " + this.quantidade + " |");
-		System.out.println("|______________________________________|");
+		System.out.println("\n\n*********************************** ");
+		System.out.println("Dados do aparelho: \n");
+		System.out.println("Código: " + this.codigo);
+		System.out.println("Modelo: " + this.modelo);
+		System.out.println("Marca: " + marca);
+		System.out.println("Preço: " + this.preco);
+		System.out.println("Quantidade: " + this.quantidade);
+		System.out.println("**************************************");
 
 	}
   
-}
 }
